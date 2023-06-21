@@ -1,13 +1,13 @@
 package accountservice.domain;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 //@Data
 @Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class Account {
 
