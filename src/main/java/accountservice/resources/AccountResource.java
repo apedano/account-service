@@ -2,8 +2,6 @@ package accountservice.resources;
 
 import accountservice.domain.Account;
 import jakarta.annotation.PostConstruct;
-import jakarta.json.Json;
-import jakarta.json.JsonObjectBuilder;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -11,6 +9,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -36,16 +35,24 @@ public class AccountResource {
                     code = ((WebApplicationException)
                     exception).getResponse().getStatus();
             }
-            JsonObjectBuilder entityBuilder = Json.createObjectBuilder()
-                    .add("exceptionType", exception.getClass().getName())
-                    .add("code", code);
+            ResourceError resourceError = new ResourceError();
+            resourceError.setExceptionType(exception.getClass().getName());
+            resourceError.setCode(code);
             if (exception.getMessage() != null) {
-                entityBuilder.add("error", exception.getMessage());
+                resourceError.setError(exception.getMessage());
             }
             return Response.status(code)
-                    .entity(entityBuilder.build())
+                    .entity(resourceError)
                     .build();
         }
+    }
+
+    @Data
+    static class ResourceError {
+        private String exceptionType;
+        private int code;
+        private String error;
+
     }
 
 

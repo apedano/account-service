@@ -35,7 +35,7 @@
     <!-- Introduces json serialization in the rest calls   -->
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-client-jsonb</artifactId>
+      <artifactId>quarkus-rest-client-jackson</artifactId>
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -61,6 +61,23 @@
       <artifactId>rest-assured</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.24.2</version>
+      <scope>test</scope>
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.eclipse</groupId>-->
+<!--      <artifactId>yasson</artifactId>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.glassfish</groupId>-->
+<!--      <artifactId>jakarta.json</artifactId>-->
+<!--      <version>2.0.1</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
   </dependencies>
   <build>
     <plugins>
@@ -99,6 +116,7 @@
         </configuration>
       </plugin>
       <plugin>
+        <!--  Includes the Failsafe plugin to run integration tests with a native executable-->
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>${surefire-plugin.version}</version>
         <executions>
@@ -124,11 +142,13 @@
       <id>native</id>
       <activation>
         <property>
+<!--          This activates the profile if the -Dnative is present in the build params-->
           <name>native</name>
         </property>
       </activation>
       <properties>
         <skipITs>false</skipITs>
+<!--        Tells the Quarkus Maven plugin to build a native executable in addition to the usual Java JAR runner-->
         <quarkus.package.type>native</quarkus.package.type>
       </properties>
     </profile>

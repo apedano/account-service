@@ -2,27 +2,31 @@ package accountservice.resources;
 
 import accountservice.domain.Account;
 import accountservice.domain.AccountStatus;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import io.restassured.mapper.ObjectMapperSerializationContext;
 import io.restassured.response.Response;
 import jakarta.inject.Inject;
-import jakarta.json.bind.Jsonb;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static accountservice.resources.AccountResource.ACCOUNT1;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 
 @QuarkusTest
 class AccountResourceTest {
 
     @Inject
-    Jsonb jsonb; //this comes from quarkus-rest-client-jsonb extension
+    ObjectMapper objectMapper; // = new GsonMapper(new DefaultGsonObjectMapperFactory());
 
     @Inject
     AccountResource accountResource;
@@ -38,16 +42,18 @@ class AccountResourceTest {
         Response result =
                 given()
                         .when().get("/accounts")
-                .then()
-                .statusCode(200)
-                .body(
-                        containsString("Customer1"),
-                        containsString("Customer2")
-                )
-                .extract()
-                .response();
+                        .then()
+                        .statusCode(200)
+                        .body(
+                                containsString("Customer1"),
+                                containsString("Customer2")
+                        )
+                        .extract()
+                        .response();
         List<Account> accounts = result.jsonPath().getList("$");
-        assertThat(accounts, hasSize(3));
+        assertThat(accounts)
+                .isNotNull()
+                .hasSize(3);
     }
 
     @Test
@@ -55,52 +61,51 @@ class AccountResourceTest {
         Account account =
                 given()
                         .when().get("/accounts/{accountNumber}", 3)
-                .then()
-                .statusCode(200)
-                .extract()
-                .as(Account.class);
-        assertThat(account.getAccountNumber(), equalTo(3L));
-        assertThat(account.getCustomerName(), equalTo("Customer2"));
-        assertThat(account.getBalance(), equalTo(new BigDecimal("12.122")));
-        assertThat(account.getAccountStatus(), equalTo(AccountStatus.OPEN));
+                        .then()
+                        .statusCode(200)
+                        .extract()
+                        .as(Account.class);
+        assertThat(account)
+                .extracting(Account::getAccountNumber, Account::getCustomerName, Account::getBalance, Account::getAccountStatus)
+                .containsExactly(3L, "Customer2", new BigDecimal("12.122"), AccountStatus.OPEN);
     }
 
     @Test
-    void createAccount() {
+    void createAccount() throws JsonProcessingException {
         Account newAccount = new Account(6L, 9L, "Customer9", BigDecimal.valueOf(123.333));
         Account returnedAccount =
                 given()
                         .contentType(ContentType.JSON)
-                .body(jsonb.toJson(newAccount))
-                .when().post("/accounts")
-                .then()
-                .statusCode(201)
-                .extract()
-                .as(Account.class);
-        assertThat(returnedAccount, equalTo(newAccount));
+                        .body(objectMapper.writeValueAsString(newAccount))
+                        .when().post("/accounts")
+                        .then()
+                        .statusCode(201)
+                        .extract()
+                        .as(Account.class);
+        assertThat(returnedAccount).isEqualTo(newAccount);
 
         Response result =
                 given()
                         .when().get("/accounts")
-                .then()
-                .statusCode(200)
-                .body(
-                        containsString("Customer2"),
-                        containsString(newAccount.getCustomerName())
-                )
-                .extract()
-                .response();
+                        .then()
+                        .statusCode(200)
+                        .body(
+                                containsString("Customer2"),
+                                containsString(newAccount.getCustomerName())
+                        )
+                        .extract()
+                        .response();
         List<Account> accounts = result.jsonPath().getList("$");
-        assertThat(accounts, hasSize(4));
+        assertThat(accounts).isNotNull().hasSize(4);
     }
 
     @Test
-    void deleteAccount() {
+    void deleteAccount() throws JsonProcessingException {
         Account toDelete = ACCOUNT1;
         Response result =
                 given()
                         .contentType(ContentType.JSON)
-                        .body(jsonb.toJson(toDelete))
+                        .body(objectMapper.writeValueAsString(toDelete))
                         .when().delete("/accounts")
                         .then()
                         .body(
@@ -110,9 +115,8 @@ class AccountResourceTest {
                         .statusCode(200)
                         .extract().response();
         List<Account> accounts = result.jsonPath().getList("$");
-        assertThat(accounts, hasSize(2));
+        assertThat(accounts).isNotNull().hasSize(2);
 
     }
-
 
 }
