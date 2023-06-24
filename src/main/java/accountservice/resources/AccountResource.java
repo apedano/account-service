@@ -1,6 +1,7 @@
 package accountservice.resources;
 
 import accountservice.domain.Account;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.annotation.PostConstruct;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -10,6 +11,7 @@ import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -48,7 +50,16 @@ public class AccountResource {
     }
 
     @Data
-    static class ResourceError {
+    /*
+    After native compiling the class not being used by any path in the code gets deleted, this causes at runtime the following:
+    org.jboss.resteasy.spi.UnhandledException: com.fasterxml.jackson.databind.exc.InvalidDefinitionException:
+     *  No serializer found for class accountservice.resources.AccountResource$ResourceError and no properties discovered to create BeanSerializer (to avoid exception, disable SerializationFeature.FAIL_ON_EMPTY_BEANS). This appears to be a native image, in which case you may need to configure reflection for the class that is to be serialized
+    This because, at the moment, when JSON-B or Jackson tries to get the list of fields of a class, if the class is not registered for reflection, no exception will be thrown. GraalVM will simply return an empty list of fields.
+     The solution is to apply the annotation to instructs Quarkus to keep the class and its members during the native compilation
+     */
+    @RegisterForReflection
+    @EqualsAndHashCode
+    public static class ResourceError {
         private String exceptionType;
         private int code;
         private String error;

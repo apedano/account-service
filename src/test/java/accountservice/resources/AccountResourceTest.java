@@ -6,14 +6,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
-import io.restassured.mapper.ObjectMapperSerializationContext;
 import io.restassured.response.Response;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.WebApplicationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import static accountservice.resources.AccountResource.ACCOUNT1;
@@ -71,6 +70,25 @@ class AccountResourceTest {
     }
 
     @Test
+    void singleAccountRetrievalErrorTest() {
+        AccountResource.ResourceError expected =
+                new AccountResource.ResourceError();
+        expected.setError("Account with id of 123456 does not exist.");
+        expected.setCode(404);
+        expected.setExceptionType(WebApplicationException.class.getName());
+
+        AccountResource.ResourceError actualResourceError =
+                given()
+                        .when()
+                        .get("/accounts/{accountNumber}", 123456)
+                        .then()
+                        .extract()
+                        .as(AccountResource.ResourceError.class);
+        assertThat(actualResourceError).isNotNull()
+                .isEqualTo(expected);
+    }
+
+    @Test
     void createAccount() throws JsonProcessingException {
         Account newAccount = new Account(6L, 9L, "Customer9", BigDecimal.valueOf(123.333));
         Account returnedAccount =
@@ -116,7 +134,6 @@ class AccountResourceTest {
                         .extract().response();
         List<Account> accounts = result.jsonPath().getList("$");
         assertThat(accounts).isNotNull().hasSize(2);
-
     }
 
 }
