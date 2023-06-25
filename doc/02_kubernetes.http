@@ -1,0 +1,14 @@
+POST http://account-service-xan80-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com/accounts
+Content-Type: application/json
+
+{
+  "accountNumber":3, "customerNumber":5, "customerName":"Customer5", "balance":123321.122
+}
+
+###
+GET http://account-service-xan80-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com/accounts
+Accept: application/json
+
+###
+
+

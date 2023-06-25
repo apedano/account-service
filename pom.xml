@@ -47,6 +47,11 @@
       <version>1.18.26</version>
       <scope>provided</scope>
     </dependency>
+<!--    Generates openshift configuration files in the target folder-->
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-openshift</artifactId>
+    </dependency>
     <!-- TEST dependencies -->
     <dependency>
       <groupId>io.quarkus</groupId>
