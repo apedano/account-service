@@ -109,9 +109,10 @@ Starting (in-cluster) container image build for jar using: DOCKER on server: htt
 ...
 ````
 
+The build config is a Docker build (the option supporting native images).
+The content of the Dockerfile is the same as from  ```src/main/docker/Dockerfile.native```. The builds is launched from the local machine (so it has visibility on the target folder containing the built native image)
 The generated Openshift resources are
 
-The build config is a Docker build (the option supporting native images). The content of the Dockerfile is the same as from  ```src/main/docker/Dockerfile.native```
 
 ````yaml
 kind: BuildConfig
