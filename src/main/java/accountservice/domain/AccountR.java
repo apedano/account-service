@@ -10,18 +10,9 @@ import java.math.BigDecimal;
 
 @Entity
 @Data
-public class AccountR {
+public class AccountR extends Account {
     @Id
     @GeneratedValue
     private Long id;
-    private Long accountNumber;
-    private Long customerNumber;
-    private String customerName;
-    private BigDecimal balance;
-    private AccountStatus accountStatus = AccountStatus.OPEN;
-
-    public void withdrawFunds(BigDecimal amount) {
-        balance = balance.subtract(amount);
-    }
 
 }

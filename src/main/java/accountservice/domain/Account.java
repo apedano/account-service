@@ -1,5 +1,6 @@
 package accountservice.domain;
 
+import jakarta.persistence.MappedSuperclass;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -9,13 +10,14 @@ import java.math.BigDecimal;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@MappedSuperclass
 public class Account {
 
-    private Long accountNumber;
-    private Long customerNumber;
-    private String customerName;
-    private BigDecimal balance;
-    private AccountStatus accountStatus = AccountStatus.OPEN;
+    protected Long accountNumber;
+    protected Long customerNumber;
+    protected String customerName;
+    protected BigDecimal balance;
+    protected AccountStatus accountStatus = AccountStatus.OPEN;
 
 
     public Account(Long accountNumber, Long customerNumber, String customerName, BigDecimal balance) {
