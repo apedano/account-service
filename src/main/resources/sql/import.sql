@@ -1,5 +1,5 @@
 create table accountar (
-                       id bigint auto_increment,
+                       id bigint,
                        accountNumber integer,
                        accountStatus varchar(255),
                        balance float,
@@ -28,7 +28,7 @@ INSERT INTO accountar(id, accountNumber, accountStatus, balance, customerName,
 
 
 create table accountr (
-                           id bigint auto_increment,
+                           id bigint,
                            accountNumber integer,
                            accountStatus varchar(255),
                            balance float,
