@@ -66,6 +66,11 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-kubernetes-config</artifactId>
         </dependency>
+            <!-- MicroProfile Health API-->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-health</artifactId>
+        </dependency>
         <dependency>
             <groupId>quarkus</groupId>
             <artifactId>banikng-api</artifactId>

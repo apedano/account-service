@@ -35,7 +35,8 @@ public class AccountRepositoryResourceTest {
                         .body(
                                 containsString("Debbie Hall"),
                                 containsString("David Tennant"),
-                                containsString("Alex Kingston")
+                                containsString("Alex Kingston"),
+                                containsString("Readiness HealthCheck")
                         )
                         .extract()
                         .response();
@@ -43,7 +44,7 @@ public class AccountRepositoryResourceTest {
 
         assertThat(accounts)
                 .isNotNull()
-                .hasSize(8);
+                .hasSize(9);
     }
 
     @Test

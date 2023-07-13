@@ -1,0 +1,30 @@
+GET http://{{host}}/q/health/live
+Accept: application/json
+
+###
+
+GET http://{{host}}/q/health/ready
+Accept: application/json
+
+###
+
+GET http://localhost:8080/q/health/
+Accept: application/json
+
+###
+
+GET http://localhost:8080/health-config
+Accept: application/json
+
+###
+
+POST http://localhost:8080/health-config
+Accept: application/json
+Content-Type: application/json
+
+{
+  "ready": false, "healty": false
+}
+
+
+

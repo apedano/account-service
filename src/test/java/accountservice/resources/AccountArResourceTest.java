@@ -42,7 +42,7 @@ public class AccountArResourceTest {
 
         assertThat(accounts)
                 .isNotNull()
-                .hasSize(8);
+                .hasSize(9);
     }
 
     @Test
