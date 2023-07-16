@@ -263,7 +263,7 @@ The dependencies don't change
 
 The classes are ``AccountR`` and ``AccountRepository``
 
-![img.png](img.png)
+![img.png](imgs/img.png)
 
 ## Deploy to Kubernetes
 
@@ -320,5 +320,5 @@ postgresql.xan80-dev.svc
 
 ```
 
-![img_1.png](img_1.png)
+![img_1.png](imgs/img_1.png)
 

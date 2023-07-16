@@ -1,0 +1,10 @@
+
+###
+
+GET http://{{host}}/resilience/call-bulkhead-method
+Accept: application/json
+
+###
+
+GET http://{{host}}/resilience/call-with-fallback/emulate-fallback
+Accept: application/json

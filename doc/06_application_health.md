@@ -31,11 +31,11 @@ Quarkus prefers using ``/q/health/live`` and ``/q/health/ready`` endpoints direc
 
 The platform (Kubernetes) can use either the response status code or the response JSON:
 
-![img_2.png](img_2.png)
+![img_2.png](imgs/img_2.png)
 
 | Liveness | Readiness |
 |----------|-----------|
-| ![img_3.png](img_3.png)|![img_7.png](img_7.png)|
+| ![img_3.png](imgs/img_3.png)|![img_7.png](imgs/img_7.png)|
 
 
 ## Activate health check in quarkus
