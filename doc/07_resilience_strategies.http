@@ -8,3 +8,19 @@ Accept: application/json
 
 GET http://{{host}}/resilience/call-with-fallback/emulate-fallback
 Accept: application/json
+
+###
+
+GET http://{{host}}/resilience/call-with-timeout
+Accept: application/json
+
+###
+
+GET http://{{host}}/resilience/call-retry
+Accept: application/json
+
+###
+
+GET http://{{host}}/resilience/call-circuit-breaker
+Accept: application/json
+

@@ -3,6 +3,7 @@ package accountservice.resources;
 import accountservice.config.WiremockAccountService;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.stream.IntStream;
 
 import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @QuarkusTest
 @Slf4j
@@ -51,6 +53,19 @@ public class ResilienceStrategiesResourceTest {
                 .then()
                 .statusCode(jakarta.ws.rs.core.Response.Status.GATEWAY_TIMEOUT.getStatusCode())
                 .extract().response();
+    }
+
+    @Test
+    public void testRetry() {
+        Response response = given()
+                .relaxedHTTPSValidation()
+                .get("resilience/call-retry")
+                .then()
+                .statusCode(jakarta.ws.rs.core.Response.Status.OK.getStatusCode())
+                .extract().response();
+
+        assertThat(new String(response.asByteArray()))
+                .isEqualTo("done doesNotDelayAfterRepeatedCalls");
     }
 
 
