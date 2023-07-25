@@ -19,6 +19,7 @@ public class AccountAr extends PanacheEntity {
     public Long customerNumber;
     public String customerName;
     public BigDecimal balance;
+    public BigDecimal overdraftLimit;
     public AccountStatus accountStatus = AccountStatus.OPEN;
 
 
@@ -32,6 +33,8 @@ public class AccountAr extends PanacheEntity {
     public void withdrawFunds(BigDecimal amount) {
         balance = balance.subtract(amount);
     }
+
+
 
     @Override
     public boolean equals(Object o) {

@@ -60,9 +60,10 @@ quarkus.datasource.password=quarkus_banking
 quarkus.datasource.jdbc.url=jdbc:postgresql://localhost/quarkus_banking
 ``
 
--e POSTGRES_USER is the parameter that sets a unique username to the Postgres database.
--e POSTGRES_PASSWORD is the parameter that allows you to set the password of the Postgres database.
--p 5432:5432 is the parameter that establishes a connection between the Host Port and Docker Container Port. In this case, both ports are given as 5432, which indicates requests sent to the Host Ports will automatically redirect to the Docker Container Port. In addition, 5432 is also the same port where PostgreSQL will be accepting requests from the client.
--v is the parameter that synchronizes the Postgres data with the local folder. This ensures that Postgres data will be safely present within the Home Directory even if the Docker Container is terminated.
--d is the parameter that runs the Docker Container in the detached mode, i.e., in the background. If you accidentally close or terminate the Command Prompt, the Docker Container will still run in the background.
+* _-e POSTGRES_USER_ is the parameter that sets a unique username to the Postgres database.
+* _-e POSTGRES_PASSWORD_ is the parameter that allows you to set the password of the Postgres database.
+* _-p 5432:5432_ is the parameter that establishes a connection between the Host Port and Docker Container Port. In this case, both ports are given as 5432, which indicates requests sent to the Host Ports will automatically redirect to the Docker Container Port. In addition, 5432 is also the same port where PostgreSQL will be accepting requests from the client.
+* _-v <local>:<container>_ is the parameter that synchronizes the Postgres data with the local folder. This ensures that Postgres data will be safely present within the Home Directory even if the Docker Container is terminated.
+* _-d_ is the parameter that runs the Docker Container in the detached mode, i.e., in the background. If you accidentally close or terminate the Command Prompt, the Docker Container will still run in the background.
 Postgres is the name of the Docker image that was previously downloaded to run the Docker Container.
+
