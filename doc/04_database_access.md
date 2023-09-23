@@ -6,6 +6,17 @@ data:
 * _data repository_
 * _active record_
 
+## Database and user preparation
+
+Make sure the db and the user are present in the db before running the application
+
+```postgresql
+CREATE USER quarkus_banking;
+ALTER USER quarkus_banking WITH PASSWORD 'quarkus_banking';
+create database quarkus_banking;
+ALTER DATABASE quarkus_banking OWNER TO quarkus_banking;
+```
+
 ## Data source configuration
 
 Quakus supports many data source drivers for _h2_, _postgres_, _mysql_, _mariadb_ and _db2_.
